@@ -1,0 +1,115 @@
+<head>
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <style>
+        *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Lato", sans-serif;
+  line-height: 1.5;
+  color: #111;
+  overflow-y: hidden;
+}
+
+main {
+  max-width: 720px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 2.5px;
+  border: 1px solid #be1eee;
+  box-shadow: 0 10px 20px rgba(17, 17, 17, 0.125),
+    0 5px 5px rgba(12, 9, 9, 0.25);
+  color: #995ad8;
+}
+
+h1 {
+  padding: 1rem;
+}
+
+input,
+button {
+  font-family: inherit;
+  line-height: inherit;
+  font-size: 22px;
+  color: inherit;
+  border: 0;
+  padding: 1rem;
+  
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  border:  1px solid #995ad8;
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  text-align: left;
+}
+
+button {
+    margin-top: 30px;
+  cursor: pointer;
+  flex: 1;
+  background-color: #9c3fe7;
+  color: white;
+}
+button:hover{
+    background-color: white;
+     color: #995ad8;
+     border:  .5px solid #995ad8;
+}
+
+section {
+  min-height: 120px;
+  text-align: center;
+  background-color: white;
+}
+
+    </style>
+</head>
+<main>
+  <h1>URL Shortener</h1>
+  <form id="post-form">
+    {% csrf_token %}
+  <input type="text" name="link" id="link" placeholder="Enter URL here">
+  <div class="buttons">
+    <button type="submit" id="shorten">Shorten</button>
+  </div>
+  </form>
+  
+  <section id="section"><h3></h3></section>
+    
+</main>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/generate',
+      data:{
+        link:$('#link').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+        $('h3').html("localhost:8000/"+data)
+      }
+    });
+  });
+</script>
